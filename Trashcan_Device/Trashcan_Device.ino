@@ -6,16 +6,16 @@
 #include <aJSON.h>
 #include "M2XStreamClient.h"
 
-char ssid[] = "<ssid>"; //  your network SSID (name)
-char pass[] = "<password>"; // your network password (use for WPA, or use as key for WEP)
+char ssid[] = "BitwiseHacks"; //  your network SSID (name)
+char pass[] = "bwhackathon"; // your network password (use for WPA, or use as key for WEP)
 
 int status = WL_IDLE_STATUS;
 
-char deviceId[] = "<device id>"; // Feed you want to post to
-char m2xKey[] = "<api key>"; // Your M2X access key
-char streamName[] = "<stream name>"; // Stream you want to post to
+char deviceId[] = "cf2da43cfec1175160be4825fc3f17ee"; // Feed you want to post to
+char m2xKey[] = "8c6e7b4726806320c6671cb5f588551f"; // Your M2X access key
+char streamName[] = "ldr_voltage"; // Stream you want to post to
 
-BMA222 mySensor;
+//BMA222 mySensor;
 
 WiFiClient client;
 
@@ -68,11 +68,13 @@ void loop() {
   
   int response;
   if(voltage > 0) {
-     response = m2xClient.updateStreamValue(deviceId,streamName,false); 
+     response = m2xClient.updateStreamValue(deviceId,streamName,0); 
   }
   else {
-     response = m2xClient.updateStreamValue(deviceId,streamName,true);
+     response = m2xClient.updateStreamValue(deviceId,streamName,1);
   }
+  
+  delay(10000);
 }
 
 void printWifiStatus() {
