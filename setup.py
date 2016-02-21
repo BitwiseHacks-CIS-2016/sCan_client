@@ -13,6 +13,6 @@ setup(
         'requests'
     ],
     entry_points = {
-        'console_scripts': 'sCan=client:main'
+        'console_scripts': 'sCan = client:main'
     }
 )

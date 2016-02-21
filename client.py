@@ -5,6 +5,11 @@ from clint.textui import prompt
 
 
 BASE_URL = 'https://blooming-tor-76519.herokuapp.com/_client'
+district_list = [
+    'Islands', 'Kwai_Tsing', 'North', 'Sai_Kung', 'Sha_Tin', 'Tai_Po', 'Tsuen_Wan',
+    'Yuen_Long', 'Kowloon_City', 'Kwun_Tong', 'Sham_Shui_Po', 'Wong_Tai_Sin', 'Yau_Tsim_Mong',
+    'Southern', 'Wan_Chai'
+]
 
 
 @click.group('main')
@@ -25,7 +30,11 @@ def create():
         {'selector': 4, 'prompt': 'plastic', 'return': 'plastic'},
         {'selector': 5, 'prompt': 'glass', 'return': 'glass'},
     ])
-    payload['district'] = prompt.query('Enter District')
+    payload['district'] = prompt.options('Enter District',
+                                       options=[
+                                           {'selector': i, 'prompt': district, 'return': district} for
+                                           i, district in enumerate(district_list)
+                                       ])
     payload['lat'] = lat if lat[0] != 'n' else '-'+lat[1:]
     payload['lng'] = lng if lng[0] != 'n' else '-'+lng[1:]
     try:
