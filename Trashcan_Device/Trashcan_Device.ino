@@ -11,28 +11,21 @@ char pass[] = "bwhackathon"; // your network password (use for WPA, or use as ke
 
 int status = WL_IDLE_STATUS;
 
-char deviceId[] = "2a80448bb5473dc2dd6720f07e8b5b0f"; // Feed you want to post to
-char m2xKey[] = "4877c89f8b83ba380314af53b2990ef0"; // Your M2X access key
+char deviceId[] = " 4031a753526af7ad07ec534e059c52da"; // Feed you want to post to
+char m2xKey[] = "6be81fc77c44b5d8238ee01092c082a"; // Your M2X access key
 char streamName[] = "ldr_voltage"; // Stream you want to post to
 
 //BMA222 mySensor;
 
 WiFiClient client;
-
+//Initialise the port for the LDR
 int port = 6;
-
+//Setup the connection to M2X
 M2XStreamClient m2xClient(&client, m2xKey);
 
 void setup() {
-
+//Start the serial monitor at 9600 baud.
   Serial.begin(9600);
-//  pinMode(RED_LED, OUTPUT); 
-
-//  mySensor.begin();
-//  uint8_t chipID = mySensor.chipID();
-//  Serial.print("chipID: ");
-//  Serial.println(chipID);
-
   delay(10);
 
   // attempt to connect to Wifi network:
@@ -45,7 +38,7 @@ void setup() {
     // print dots while we wait to connect
     Serial.print(".");
     delay(300);
-  }
+  }// Confirm connection and inform the user that the launchpad is waiting to obtain the IP address.
   Serial.println("\nConnect success!");
   Serial.println("Waiting for an ip address");
 
@@ -63,21 +56,24 @@ void setup() {
 }
 
 void loop() {
+  //Read the resistance in the LDR and assign the value to the integer variable sensorValue
   int sensorValue = analogRead(port);
+  //Do a quick calculation to convert the resistance to voltage.
   int voltage = sensorValue * (3.0/1023.0);
-  
+  // Initialise a variable that will be used to send data to the M2X device.
   int response;
-  if(voltage > 0) {
-     response = m2xClient.updateStreamValue(deviceId,streamName,0); 
+  if(voltage > 0) { // If the voltage is greater than 0 i.e. The LDR detects brightness.
+     response = m2xClient.updateStreamValue(deviceId,streamName,0); //Send a 0 binary digit to M2X, meaning that the rubbish bin is not full.
   }
-  else {
-     response = m2xClient.updateStreamValue(deviceId,streamName,1);
+  else { // Otherwise if the LDR reads a value of 0, meaning it is dark...
+     response = m2xClient.updateStreamValue(deviceId,streamName,1); // Send a 1 binary digit to M2X, meaning that the rubbish bin is full.
   }
   
-  delay(10000);
+  delay(10000); // Wait 10 seconds. The LDR is checked every 10 seconds. 
+  Serial.println("sCAN is still functioning"); //Tell the user that the program is still running.
 }
 
-void printWifiStatus() {
+void printWifiStatus() { // A method that does the following:
   // print the SSID of the network you're attached to:
   Serial.print("SSID: ");
   Serial.println(WiFi.SSID());
@@ -87,4 +83,3 @@ void printWifiStatus() {
   Serial.print("IP Address: ");
   Serial.println(ip);
 }
-
