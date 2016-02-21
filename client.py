@@ -47,6 +47,7 @@ def create():
 
 @main.command('update')
 def update_device():
+    ''' Updates device \'filled\' attribute'''
     payload = dict()
     payload['id'] = prompt.query('Enter device ID')
     payload['filled'] = prompt.options('Filled?', options=[

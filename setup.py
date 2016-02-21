@@ -12,7 +12,8 @@ setup(
         'clint',
         'requests'
     ],
-    entry_points = {
-        'console_scripts': 'sCan = client:main'
-    }
+    entry_points = """
+        [console_scripts]
+        sCan=client:main
+    """
 )
