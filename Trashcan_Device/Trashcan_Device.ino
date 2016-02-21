@@ -11,8 +11,8 @@ char pass[] = "bwhackathon"; // your network password (use for WPA, or use as ke
 
 int status = WL_IDLE_STATUS;
 
-char deviceId[] = "4031a753526af7ad07ec534e059c52da"; // Feed you want to post to
-char m2xKey[] = "06be81fc77c44b5d8238ee01092c082a"; // Your M2X access key
+char deviceId[] = "6ba85cc76e7c4307c49a84b9542002b8"; // Feed you want to post to
+char m2xKey[] = "6bacc884c7859e2ed62894b542539759"; // Your M2X access key
 char streamName[] = "ldr_voltage"; // Stream you want to post to
 
 //BMA222 mySensor;
