@@ -12,6 +12,15 @@ district_list = [
 ]
 
 
+def send_request(method, data):
+    try:
+        req = requests.request(method, BASE_URL, json=data)
+        req.raise_for_status()
+        click.echo('Success')
+    except requests.exceptions.HTTPError:
+        click.echo('Operation Failed')
+
+
 @click.group('main')
 def main():
     pass
@@ -37,12 +46,7 @@ def create():
                                        ])
     payload['lat'] = lat if lat[0] != 'n' else '-'+lat[1:]
     payload['lng'] = lng if lng[0] != 'n' else '-'+lng[1:]
-    try:
-        req = requests.post(BASE_URL, json=payload)
-        req.raise_for_status()
-        click.echo('Success')
-    except requests.exceptions.HTTPError:
-        click.echo('Operation Failed')
+    send_request('post', payload)
 
 
 @main.command('update')
@@ -54,13 +58,15 @@ def update_device():
         {'selector': 'Y', 'prompt': 'Yes', 'return': 1},
         {'selector': 'N', 'prompt': 'No', 'return': 0}
     ])
-    try:
-        req = requests.put(BASE_URL, json=payload)
-        req.raise_for_status()
-        click.echo('Success')
-    except requests.exceptions.HTTPError as e:
-        click.echo(e)
-        click.echo('Operation Failed')
+    send_request('put', payload)
+
+
+@main.command('delete')
+def delete_device():
+    ''' Deletes devices based on ID '''
+    payload = dict()
+    payload['id'] = prompt.query('Enter device ID')
+    send_request('delete', payload)
 
 
 if __name__ == '__main__':
